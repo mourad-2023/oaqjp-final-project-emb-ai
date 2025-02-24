@@ -7,4 +7,12 @@ def emotion_detector(text_to_analyse):
     input_json = { "raw_document": { "text": text_to_analyse } }
 
     r = requests.post(url, headers=headers, json=input_json)
-    return r.json()['emotionPredictions'][0]['emotionMentions'][0]['span']['text']
+    emotions = r.json()['emotionPredictions'][0]['emotion']
+    em_values = list(emotions.values())
+    max_em_value = max(em_values)
+    em_keys = list(emotions.keys())
+    dominant_emotion = em_keys[em_values.index(max_em_value)]
+    emotions['dominant_emotion'] = dominant_emotion
+    return emotions
+    
+        
